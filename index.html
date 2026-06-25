@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Accumulator & Stress Tester</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght=400;700&family=Inter:wght=400;600;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        /* Custom scrollbar for cyber log and single line text */
+        .cyber-scroll::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .cyber-scroll::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .cyber-scroll::-webkit-scrollbar-thumb {
+            background: #ef4444;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 h-screen w-full flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="flex-none border-b border-slate-800 bg-slate-900/50 backdrop-blur px-6 py-4">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-red-500/10 rounded-lg border border-red-500/30 text-red-500 animate-pulse">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight text-white">QUANTUM ACCUMULATION ENGINE</h1>
+                    <p class="text-xs text-slate-400 code-font">v3.0 // Browser Performance Stress Tester</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    Thread Stable
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 w-full max-w-[1600px] mx-auto p-4 md:p-6 flex flex-col lg:flex-row gap-6 overflow-y-auto lg:overflow-hidden min-h-0">
+        
+        <!-- Left Column: Controls & Configuration -->
+        <div class="lg:w-[380px] xl:w-[420px] flex-none flex flex-col lg:h-full lg:overflow-y-auto cyber-scroll lg:pr-2 space-y-6 pb-4 lg:pb-0">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-6 shadow-xl flex-shrink-0">
+                <div class="border-b border-slate-800 pb-3">
+                    <h2 class="text-md font-semibold text-slate-200 uppercase tracking-wider">Engine Controls</h2>
+                    <p class="text-xs text-slate-400 mt-1">Configure and initiate the sequence.</p>
+                </div>
+
+                <!-- Primary Action Buttons -->
+                <div class="space-y-3">
+                    <button id="btn-toggle" class="w-full py-4 px-6 rounded-lg font-bold text-white transition-all transform active:scale-95 shadow-lg bg-emerald-600 hover:bg-emerald-500 shadow-emerald-900/20 flex justify-center items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Start Accumulator
+                    </button>
+
+                    <button id="btn-reset" class="w-full py-2.5 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-sm transition-all border border-slate-700/50">
+                        Reset Numbers
+                    </button>
+                </div>
+
+                <!-- Slider: Calculation Intensity -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <label for="intensity-slider" class="text-xs font-semibold uppercase tracking-wider text-slate-300">Math Operations / Frame</label>
+                        <span id="intensity-val" class="text-sm font-bold text-cyan-400 code-font">10,000</span>
+                    </div>
+                    <!-- Tripled max limit to 1,500,000 -->
+                    <input type="range" id="intensity-slider" min="1" max="1500000" step="100" value="10000" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500">
+                    <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+                        <span>1 / frame</span>
+                        <span>1.5M / frame</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 font-light">Increase this to direct your CPU to compute up to 1.5 million additions per render step.</p>
+                </div>
+
+                <!-- Custom Stress Settings -->
+                <div class="space-y-4 pt-2">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-300 block">Stress Amplifiers</span>
+                    
+                    <!-- Toggle DOM Flood -->
+                    <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition-all select-none">
+                        <div class="flex items-center h-5 mt-0.5">
+                            <input id="chk-dom-flood" type="checkbox" class="w-4 h-4 text-red-600 bg-slate-900 border-slate-700 rounded focus:ring-red-500 focus:ring-2">
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-slate-200 block">DOM Printing Flood</span>
+                            <span class="text-xs text-slate-400 block mt-0.5 font-light">Spits scrolling console messages to the UI, forcing steady paint cycle delays.</span>
+                        </div>
+                    </label>
+
+                    <!-- Synchronous Scroll Lock -->
+                    <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition-all select-none">
+                        <div class="flex items-center h-5 mt-0.5">
+                            <input id="chk-scroll-lock" type="checkbox" class="w-4 h-4 text-orange-500 bg-slate-900 border-slate-700 rounded focus:ring-orange-500 focus:ring-2">
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-orange-400 block">Scroll/Swipe Choke</span>
+                            <span class="text-xs text-slate-400 block mt-0.5 font-light">Merges the fast scrolling thread with the slow math thread. Scrolling will become intensely choppy.</span>
+                        </div>
+                    </label>
+
+                    <!-- Image Node Flood -->
+                    <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition-all select-none">
+                        <div class="flex items-center h-5 mt-0.5">
+                            <input id="chk-image-flood" type="checkbox" class="w-4 h-4 text-purple-500 bg-slate-900 border-slate-700 rounded focus:ring-purple-500 focus:ring-2">
+                        </div>
+                        <div>
+                            <span class="text-sm font-semibold text-purple-400 block">Image Node Flood</span>
+                            <span class="text-xs text-slate-400 block mt-0.5 font-light">Rapidly generates and paints graphics to exhaust memory and rendering pipelines.</span>
+                        </div>
+                    </label>
+
+                    <!-- Heavy Thread Freeze Simulation -->
+                    <div class="p-3 rounded-lg bg-red-950/20 border border-red-900/30 space-y-2">
+                        <span class="text-xs font-bold text-red-400 uppercase tracking-wide block">⚠️ Simulate Instant Lockup</span>
+                        <p class="text-[11px] text-red-200/70 leading-relaxed font-light">Runs a synchronous, blocking while-loop to instantly freeze the main browser thread.</p>
+                        <div class="flex gap-2">
+                            <button id="btn-freeze-2s" class="flex-1 py-1.5 px-3 bg-red-900/40 hover:bg-red-900/60 border border-red-700/30 text-red-200 text-xs font-semibold rounded transition-all">Freeze 2 Sec</button>
+                            <button id="btn-freeze-5s" class="flex-1 py-1.5 px-3 bg-red-900/60 hover:bg-red-900/80 border border-red-600/30 text-red-100 text-xs font-semibold rounded transition-all">Freeze 5 Sec</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Safety Information -->
+                <div class="text-xs text-slate-400 bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1">
+                    <p class="font-semibold text-slate-300">How to safely stop:</p>
+                    <p>1. Toggle the "Stop Accumulator" button.</p>
+                    <p>2. If the interface freezes, close this browser tab to instantly reclaim your system's resources.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle & Right Columns: Performance Dashboard & Visualizer -->
+        <div class="flex-1 flex flex-col min-w-0 lg:h-full gap-4 lg:gap-6 lg:overflow-y-auto cyber-scroll pb-4 lg:pb-0 lg:pr-2">
+            
+            <!-- Real-time Stats Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 flex-none">
+                
+                <!-- Stat: FPS -->
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col justify-between shadow-lg relative overflow-hidden">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Frame Rate</span>
+                    <div class="my-2 flex items-baseline gap-1">
+                        <span id="stat-fps" class="text-3xl font-extrabold text-emerald-400 code-font">60.0</span>
+                        <span class="text-xs text-slate-500">FPS</span>
+                    </div>
+                    <div id="stat-fps-bar" class="w-full h-1.5 bg-emerald-950 rounded-full overflow-hidden">
+                        <div id="stat-fps-fill" class="h-full bg-emerald-400 transition-all duration-300" style="width: 100%"></div>
+                    </div>
+                </div>
+
+                <!-- Stat: Operations / Sec -->
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col justify-between shadow-lg">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Calculations/s</span>
+                    <div class="my-2 flex items-baseline gap-1">
+                        <span id="stat-ops" class="text-2xl font-extrabold text-cyan-400 code-font">0</span>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono">JS Math Iterations</span>
+                </div>
+
+                <!-- Stat: Total Iterations -->
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col justify-between shadow-lg">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Cycles</span>
+                    <div class="my-2 flex items-baseline gap-1">
+                        <span id="stat-cycles" class="text-xl font-extrabold text-purple-400 code-font">0</span>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono">Numbers Added</span>
+                </div>
+
+                <!-- Stat: Memory Estimation -->
+                <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col justify-between shadow-lg">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">UI Load State</span>
+                    <div class="my-2 flex items-baseline gap-1">
+                        <span id="stat-load" class="text-xl font-bold text-slate-300 code-font">NOMINAL</span>
+                    </div>
+                    <span id="stat-load-sub" class="text-[10px] text-slate-500 font-mono">Browser Response: Fast</span>
+                </div>
+            </div>
+
+            <!-- Big Number Showcase -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl relative overflow-hidden flex-none">
+                <div class="absolute top-0 right-0 p-3 opacity-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32 text-slate-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div class="relative z-10 space-y-2">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Current Accumulated Total</span>
+                    <div id="stat-sum" class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-amber-400 code-font break-all tracking-tight leading-tight select-all cursor-pointer hover:text-amber-300 transition-colors" title="Click to copy value">
+                        0
+                    </div>
+                    <div class="flex justify-between items-center pt-2">
+                        <span class="text-[10px] text-slate-500 font-mono">Uses ES6 BigInt to prevent math overflow limits.</span>
+                        <button id="btn-copy" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 bg-slate-950 px-2 py-1 rounded border border-slate-800 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                            </svg>
+                            Copy Total
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Visualization & Console Area -->
+            <div class="flex-1 flex flex-col gap-4 lg:gap-6 min-h-0">
+                
+                <!-- Row 1: Graph & Single Line -->
+                <div class="flex-1 flex flex-col md:flex-row gap-4 lg:gap-6 min-h-[250px] md:min-h-0">
+                    
+                    <!-- Performance Graph -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-xl flex flex-col flex-1 w-full min-w-0">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">FPS Stability History</span>
+                            <span class="text-[10px] text-slate-500 font-mono">Dips indicate processing lag</span>
+                        </div>
+                        <div class="relative bg-slate-950 rounded-lg border border-slate-850 flex-1 min-h-0 w-full overflow-hidden">
+                            <canvas id="fps-chart" class="absolute inset-0 w-full h-full"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Unbroken Single-Line Render Chamber (Heavy Layout Lag) -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-xl flex flex-col flex-1 w-full min-w-0">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                                Single-Line Render Chamber
+                            </span>
+                            <label class="flex items-center gap-2 cursor-pointer select-none">
+                                <span class="text-[10px] text-slate-400 font-mono">Activate</span>
+                                <input id="chk-single-line" type="checkbox" class="w-3.5 h-3.5 text-amber-500 bg-slate-900 border-slate-700 rounded focus:ring-amber-500">
+                            </label>
+                        </div>
+                        <!-- Single Horizontal Line Text Box -->
+                        <div id="single-line-box" class="flex-1 bg-slate-950 p-3 rounded-lg border border-slate-850 min-h-[100px] font-mono text-[10px] text-amber-500/80 overflow-x-auto whitespace-nowrap cyber-scroll select-all tracking-tight" title="Double click to select all text inside">
+                            [Single Line Stream Off] Toggle active switch above to push continuous additions to a single text node...
+                        </div>
+                        <div class="mt-2 flex justify-between text-[10px] text-slate-500 font-mono">
+                            <span>Characters: <span id="char-count" class="text-amber-500">0</span></span>
+                            <span>Forces layout reflows!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2: Console Feed & Image Row -->
+                <div class="flex-1 flex flex-col md:flex-row gap-4 lg:gap-6 min-h-[250px] md:min-h-0">
+                    
+                    <!-- Console Feed -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-xl flex flex-col flex-1 w-full min-w-0">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                                Live Console Feed
+                            </span>
+                            <span class="text-[10px] text-slate-500 font-mono" id="log-speed">Idle</span>
+                        </div>
+                        <!-- Log stream -->
+                        <div id="cyber-log" class="flex-1 bg-slate-950 p-3 rounded-lg border border-slate-850 min-h-[100px] font-mono text-[10px] text-red-400 overflow-y-auto cyber-scroll space-y-1">
+                            <div class="text-slate-500">[System Log Ready]</div>
+                            <div class="text-slate-500">Configure stress amplifiers to feed active outputs here.</div>
+                        </div>
+                    </div>
+
+                    <!-- Image Render Chamber -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-xl flex flex-col flex-1 w-full min-w-0">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse"></span>
+                                Image Render Chamber
+                            </span>
+                        </div>
+                        <!-- Image Grid Stream -->
+                        <div id="image-flood-box" class="flex-1 bg-slate-950 p-3 rounded-lg border border-slate-850 min-h-[100px] overflow-y-auto cyber-scroll flex flex-wrap content-start gap-1">
+                            <div class="text-slate-500 font-mono text-[10px] w-full">[Image Stream Off] Awaiting activation...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Feedback Banner -->
+    <div id="toast-notif" class="fixed bottom-5 right-5 bg-slate-900 border border-slate-800 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <div class="p-1 bg-emerald-500/10 rounded-lg text-emerald-500 border border-emerald-500/20">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </div>
+        <span id="toast-text" class="text-sm font-medium text-slate-200">Calculated successfully!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="flex-none border-t border-slate-900 bg-slate-950 px-6 py-4 text-center">
+        <p class="text-xs text-slate-500">
+            This stress-testing interface creates safe browser thread workloads using chunked math iterations and DOM queuing.
+        </p>
+    </footer>
+
+    <!-- App Logic -->
+    <script>
+        // DOM Elements
+        const btnToggle = document.getElementById('btn-toggle');
+        const btnReset = document.getElementById('btn-reset');
+        const intensitySlider = document.getElementById('intensity-slider');
+        const intensityVal = document.getElementById('intensity-val');
+        const chkDomFlood = document.getElementById('chk-dom-flood');
+        const chkSingleLine = document.getElementById('chk-single-line');
+        const chkScrollLock = document.getElementById('chk-scroll-lock');
+        const chkImageFlood = document.getElementById('chk-image-flood');
+        const singleLineBox = document.getElementById('single-line-box');
+        const imageFloodBox = document.getElementById('image-flood-box');
+        const charCountDisp = document.getElementById('char-count');
+        const btnFreeze2s = document.getElementById('btn-freeze-2s');
+        const btnFreeze5s = document.getElementById('btn-freeze-5s');
+        
+        const statFps = document.getElementById('stat-fps');
+        const statFpsFill = document.getElementById('stat-fps-fill');
+        const statOps = document.getElementById('stat-ops');
+        const statCycles = document.getElementById('stat-cycles');
+        const statLoad = document.getElementById('stat-load');
+        const statLoadSub = document.getElementById('stat-load-sub');
+        const statSum = document.getElementById('stat-sum');
+        
+        const cyberLog = document.getElementById('cyber-log');
+        const logSpeed = document.getElementById('log-speed');
+        const btnCopy = document.getElementById('btn-copy');
+        const toastNotif = document.getElementById('toast-notif');
+        const toastText = document.getElementById('toast-text');
+        
+        const canvas = document.getElementById('fps-chart');
+        const ctx = canvas.getContext('2d');
+
+        // State Variables
+        let isRunning = false;
+        let sum = 0n;
+        let totalCycles = 0n;
+        let batchSize = 10000;
+        let isDomFlood = false;
+        let isSingleLineEnabled = false;
+        let isScrollLockEnabled = false;
+        let isImageFlood = false;
+        let singleLineText = "";
+
+        // Performance Calculations
+        let lastFrameTime = performance.now();
+        let fpsHistory = Array(60).fill(60);
+        let accumulatedOpsLastSec = 0;
+        let lastOpsCheckTime = performance.now();
+        let opsPerSecond = 0;
+
+        // Notification Helper
+        function showToast(message) {
+            toastText.textContent = message;
+            toastNotif.classList.remove('translate-y-20', 'opacity-0');
+            toastNotif.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toastNotif.classList.remove('translate-y-0', 'opacity-100');
+                toastNotif.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        // Initialize Canvas Sizing
+        function resizeCanvas() {
+            if (!canvas.parentElement) return;
+            const parent = canvas.parentElement;
+            canvas.width = parent.clientWidth * window.devicePixelRatio;
+            canvas.height = parent.clientHeight * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            drawChart();
+        }
+        
+        // Use ResizeObserver for perfect dynamic resizing regardless of window events
+        const resizeObserver = new ResizeObserver(() => {
+            requestAnimationFrame(resizeCanvas);
+        });
+        resizeObserver.observe(canvas.parentElement);
+        resizeCanvas();
+
+        // Update Slider Value Display
+        intensitySlider.addEventListener('input', (e) => {
+            batchSize = parseInt(e.target.value, 10);
+            intensityVal.textContent = batchSize.toLocaleString();
+        });
+
+        // DOM Flood Checkbox
+        chkDomFlood.addEventListener('change', (e) => {
+            isDomFlood = e.target.checked;
+            if (!isDomFlood) {
+                logSpeed.textContent = "Idle";
+            }
+        });
+
+        // Single-Line Stream Checkbox
+        chkSingleLine.addEventListener('change', (e) => {
+            isSingleLineEnabled = e.target.checked;
+            if (!isSingleLineEnabled) {
+                singleLineBox.textContent = "[Single Line Stream Off] Toggle active switch above to push continuous additions to a single text node...";
+            } else {
+                singleLineBox.textContent = singleLineText || "[Awaiting computation stream...]";
+            }
+        });
+
+        // Scroll Choke Checkbox
+        chkScrollLock.addEventListener('change', (e) => {
+            isScrollLockEnabled = e.target.checked;
+        });
+
+        // Image Flood Checkbox
+        chkImageFlood.addEventListener('change', (e) => {
+            isImageFlood = e.target.checked;
+            if (!isImageFlood) {
+                imageFloodBox.innerHTML = '<div class="text-slate-500 font-mono text-[10px] w-full">[Image Stream Off] Awaiting activation...</div>';
+            } else {
+                imageFloodBox.innerHTML = '';
+            }
+        });
+
+        // The { passive: false } Magic Trick
+        function interceptScroll(event) {
+            if (isScrollLockEnabled && isRunning) {
+                // By providing a function that runs on the main thread for these events,
+                // and disabling the 'passive' optimization, the browser MUST wait for 
+                // this function to return before it can physically move the page.
+                // Since the main thread is buried in math, the scroll will lag horribly!
+                
+                // We run a tiny dummy loop to force the thread to fully evaluate this block
+                let dummy = 0;
+                for(let i=0; i<100; i++) dummy += i; 
+            }
+        }
+
+        // Attach non-passive listeners to mouse wheel and touch swiping
+        window.addEventListener('wheel', interceptScroll, { passive: false });
+        window.addEventListener('touchmove', interceptScroll, { passive: false });
+
+        // Main Thread Freeze Utility
+        function runHeavyBlockingLoop(milliseconds) {
+            const start = Date.now();
+            let count = 0;
+            // Instantly freezes UI
+            while (Date.now() - start < milliseconds) {
+                count++;
+            }
+            showToast(`Engine locked synchronously for ${milliseconds / 1000}s!`);
+        }
+
+        btnFreeze2s.addEventListener('click', () => {
+            showToast("Freezing tab in 200ms...");
+            setTimeout(() => runHeavyBlockingLoop(2000), 200);
+        });
+
+        btnFreeze5s.addEventListener('click', () => {
+            showToast("Freezing tab in 200ms...");
+            setTimeout(() => runHeavyBlockingLoop(5000), 200);
+        });
+
+        // Reset state
+        btnReset.addEventListener('click', () => {
+            sum = 0n;
+            totalCycles = 0n;
+            singleLineText = "";
+            charCountDisp.textContent = "0";
+            updateDisplay();
+            cyberLog.innerHTML = '<div class="text-slate-500">[System Log Reset] Engine memory cleared.</div>';
+            
+            if (isSingleLineEnabled) {
+                singleLineBox.textContent = "[Awaiting computation stream...]";
+            } else {
+                singleLineBox.textContent = "[Single Line Stream Off] Toggle active switch above to push continuous additions to a single text node...";
+            }
+
+            if (isImageFlood) {
+                imageFloodBox.innerHTML = '';
+            } else {
+                imageFloodBox.innerHTML = '<div class="text-slate-500 font-mono text-[10px] w-full">[Image Stream Off] Awaiting activation...</div>';
+            }
+
+            showToast("Accumulator numbers reset.");
+        });
+
+        // Copy Sum to Clipboard
+        function copySum() {
+            const range = document.createRange();
+            range.selectNode(statSum);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            try {
+                document.execCommand('copy');
+                showToast("Copied sum value to clipboard!");
+            } catch (err) {
+                showToast("Failed to copy to clipboard.");
+            }
+            window.getSelection().removeAllRanges();
+        }
+        btnCopy.addEventListener('click', copySum);
+        statSum.addEventListener('click', copySum);
+
+        // Core Accumulator Engine Loop
+        function loop() {
+            const now = performance.now();
+            const delta = now - lastFrameTime;
+            lastFrameTime = now;
+
+            // Compute actual FPS
+            const currentFps = 1000 / delta;
+            
+            // Filter extreme spikes during frame delays or tab sleep
+            if (currentFps < 200) {
+                fpsHistory.push(currentFps);
+                fpsHistory.shift();
+            }
+
+            if (isRunning) {
+                let startCycle = totalCycles;
+                // Accumulation Logic block
+                for (let i = 0; i < batchSize; i++) {
+                    totalCycles++;
+                    sum += totalCycles;
+                }
+                
+                accumulatedOpsLastSec += batchSize;
+
+                // Handle single-line unbroken rendering (highly intensive layout operations)
+                if (isSingleLineEnabled) {
+                    let textAppendChunk = "";
+                    // Determine safety chunk limits depending on slider intensity to prevent instant crashing while delivering massive lag
+                    const logLimit = Math.min(batchSize, 5000);
+                    for (let j = 0; j < logLimit; j++) {
+                        textAppendChunk += (startCycle + BigInt(j)).toString() + "→";
+                    }
+                    
+                    singleLineText += textAppendChunk;
+
+                    // Limit single-line buffer length to 100,000 chars to avoid breaking the browser's absolute heap limit, 
+                    // while still triggering heavy browser layout measuring and repaint lag.
+                    if (singleLineText.length > 100000) {
+                        singleLineText = singleLineText.slice(-100000);
+                    }
+
+                    singleLineBox.textContent = singleLineText;
+                    charCountDisp.textContent = singleLineText.length.toLocaleString();
+                    
+                    // Force the horizontal scroll position to slide right, initiating further reflow tasks
+                    singleLineBox.scrollLeft = singleLineBox.scrollWidth;
+                }
+
+                // Handle DOM Flood Stress-Amplifier
+                if (isDomFlood) {
+                    const logBatch = Math.min(25, Math.ceil(batchSize / 1000)); // Rate limit logs slightly so browser doesn't immediately crash
+                    let logsHTML = '';
+                    for (let j = 0; j < logBatch; j++) {
+                        const simulatedRandomCycle = startCycle + BigInt(Math.floor(Math.random() * batchSize));
+                        logsHTML += `<div class="truncate text-red-400">ADD: ${simulatedRandomCycle} | TOTAL: ${sum.toString().slice(0, 30)}...</div>`;
+                    }
+                    cyberLog.insertAdjacentHTML('beforeend', logsHTML);
+                    
+                    // Maintain standard size to manage memory
+                    while (cyberLog.childNodes.length > 150) {
+                        cyberLog.removeChild(cyberLog.firstChild);
+                    }
+                    cyberLog.scrollTop = cyberLog.scrollHeight;
+                    logSpeed.textContent = `Rendering: +${logBatch} lines/f`;
+                }
+
+                // Handle Image Node Flood Stress-Amplifier
+                if (isImageFlood) {
+                    // Calculate how many images to inject per frame based on slider
+                    const imgBatch = Math.min(15, Math.ceil(batchSize / 3000)); 
+                    let imgHTML = '';
+                    for (let j = 0; j < imgBatch; j++) {
+                        // Generate a completely custom SVG graphic string based on our current math cycle
+                        const cycleNum = Number(startCycle % 100000n) + j;
+                        const hue = cycleNum % 360; 
+                        
+                        // Create a tiny SVG graphic to force the browser's painting engine to work hard
+                        const svgData = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="hsl(${hue}, 70%, 50%)" rx="6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="11" font-family="sans-serif" font-weight="bold">${cycleNum % 100}</text></svg>`;
+                        
+                        // We safely encode it into a format the image tag can read natively
+                        const encodedSvg = encodeURIComponent(svgData);
+                        imgHTML += `<img src="data:image/svg+xml;utf8,${encodedSvg}" class="w-10 h-10 object-cover rounded shadow-md border border-slate-800" alt="stress block" onerror="this.style.display='none'">`;
+                    }
+                    imageFloodBox.insertAdjacentHTML('beforeend', imgHTML);
+                    
+                    // Browsers crash very fast with too many image nodes in memory. 
+                    // We cap it around 200 elements inside the box at any given time.
+                    while (imageFloodBox.childNodes.length > 200) {
+                        imageFloodBox.removeChild(imageFloodBox.firstChild);
+                    }
+                    
+                    // Auto-scroll to the bottom to force visual updates
+                    imageFloodBox.scrollTop = imageFloodBox.scrollHeight;
+                }
+            }
+
+            // Calculations per Second Updates
+            if (now - lastOpsCheckTime >= 1000) {
+                opsPerSecond = accumulatedOpsLastSec;
+                accumulatedOpsLastSec = 0;
+                lastOpsCheckTime = now;
+            }
+
+            updateDisplay();
+            drawChart();
+
+            requestAnimationFrame(loop);
+        }
+
+        // Render Current State to Dashboard
+        function updateDisplay() {
+            // Calculate average FPS
+            const avgFps = fpsHistory.reduce((a, b) => a + b, 0) / fpsHistory.length;
+            
+            statFps.textContent = avgFps.toFixed(1);
+            
+            // Color updates based on FPS performance
+            if (avgFps >= 50) {
+                statFps.className = "text-3xl font-extrabold text-emerald-400 code-font";
+                statFpsFill.className = "h-full bg-emerald-400 transition-all";
+                statLoad.textContent = "NOMINAL";
+                statLoad.className = "text-xl font-bold text-emerald-400 code-font";
+                statLoadSub.textContent = "Browser Response: Fast";
+            } else if (avgFps >= 30) {
+                statFps.className = "text-3xl font-extrabold text-amber-500 code-font";
+                statFpsFill.className = "h-full bg-amber-500 transition-all";
+                statLoad.textContent = "CONGESTED";
+                statLoad.className = "text-xl font-bold text-amber-500 code-font";
+                statLoadSub.textContent = "Moderate Rendering Lag";
+            } else {
+                statFps.className = "text-3xl font-extrabold text-red-500 code-font";
+                statFpsFill.className = "h-full bg-red-500 transition-all";
+                statLoad.textContent = "CRITICAL LAG";
+                statLoad.className = "text-xl font-bold text-red-500 code-font animate-pulse";
+                statLoadSub.textContent = "Severe Render Stuttering";
+            }
+
+            // Fill Bar
+            statFpsFill.style.width = `${Math.min(100, (avgFps / 60) * 100)}%`;
+
+            // Operational Updates
+            statOps.textContent = opsPerSecond.toLocaleString();
+            statCycles.textContent = totalCycles.toLocaleString();
+            
+            // Smart truncate for massive BigInt
+            const sumStr = sum.toString();
+            if (sumStr.length > 50) {
+                statSum.textContent = sumStr.slice(0, 20) + "..." + sumStr.slice(-25);
+            } else {
+                statSum.textContent = sumStr;
+            }
+        }
+
+        // Draw simple, custom canvas chart of performance over time
+        function drawChart() {
+            const width = canvas.width / window.devicePixelRatio;
+            const height = canvas.height / window.devicePixelRatio;
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw grid lines
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            
+            // 30 FPS line
+            const y30 = height - (30 / 60) * height;
+            ctx.beginPath();
+            ctx.moveTo(0, y30);
+            ctx.lineTo(width, y30);
+            ctx.stroke();
+
+            // Render history line
+            ctx.beginPath();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#22d3ee'; // cyan-400
+
+            const pointsCount = fpsHistory.length;
+            const step = width / (pointsCount - 1);
+
+            for (let i = 0; i < pointsCount; i++) {
+                // Scale FPS to y-coordinate (0-60 range)
+                const fpsValue = Math.min(60, Math.max(0, fpsHistory[i]));
+                const x = i * step;
+                const y = height - (fpsValue / 60) * height;
+
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+
+            // Gradient below the line
+            ctx.lineTo(width, height);
+            ctx.lineTo(0, height);
+            const gradient = ctx.createLinearGradient(0, 0, 0, height);
+            gradient.addColorStop(0, 'rgba(34, 211, 238, 0.15)');
+            gradient.addColorStop(1, 'rgba(34, 211, 238, 0)');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        }
+
+        // Handle Play/Pause
+        btnToggle.addEventListener('click', () => {
+            isRunning = !isRunning;
+            if (isRunning) {
+                btnToggle.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Stop Accumulator
+                `;
+                btnToggle.classList.remove('bg-emerald-600', 'hover:bg-emerald-500', 'shadow-emerald-900/20');
+                btnToggle.classList.add('bg-red-600', 'hover:bg-red-500', 'shadow-red-900/20');
+                showToast("Engine started. Accumulating integers...");
+            } else {
+                btnToggle.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Start Accumulator
+                `;
+                btnToggle.classList.remove('bg-red-600', 'hover:bg-red-500', 'shadow-red-900/20');
+                btnToggle.classList.add('bg-emerald-600', 'hover:bg-emerald-500', 'shadow-emerald-900/20');
+                showToast("Accumulator paused.");
+            }
+        });
+
+        // Initialize Loop
+        requestAnimationFrame(loop);
+    </script>
+</body>
+</html>
