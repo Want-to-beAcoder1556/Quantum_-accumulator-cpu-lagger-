@@ -7,7 +7,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght=400;700&family=Inter:wght=400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;600;800&display=swap');
         body {
             font-family: 'Inter', sans-serif;
         }
@@ -41,7 +41,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-extrabold tracking-tight text-white">QUANTUM ACCUMULATION ENGINE</h1>
-                    <p class="text-xs text-slate-400 code-font">v3.0 // Browser Performance Stress Tester</p>
+                    <p class="text-xs text-slate-400 code-font">v3.5 // Browser Performance Stress Tester</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
@@ -85,7 +85,6 @@
                         <label for="intensity-slider" class="text-xs font-semibold uppercase tracking-wider text-slate-300">Math Operations / Frame</label>
                         <span id="intensity-val" class="text-sm font-bold text-cyan-400 code-font">10,000</span>
                     </div>
-                    <!-- Tripled max limit to 1,500,000 -->
                     <input type="range" id="intensity-slider" min="1" max="1500000" step="100" value="10000" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-500">
                     <div class="flex justify-between text-[10px] text-slate-500 font-mono">
                         <span>1 / frame</span>
@@ -152,17 +151,17 @@
         </div>
 
         <!-- Middle & Right Columns: Performance Dashboard & Visualizer -->
-        <div class="flex-1 flex flex-col min-w-0 lg:h-full gap-4 lg:gap-6 lg:overflow-y-auto cyber-scroll lg:pr-2 lg:pb-4 pb-10">
+        <div class="flex-1 flex flex-col min-w-0 lg:h-full gap-4 lg:gap-6 lg:overflow-y-auto cyber-scroll lg:pr-2 lg:pb-6 pb-10">
             
             <!-- Real-time Stats Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 flex-none">
                 
                 <!-- Stat: FPS -->
                 <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col justify-between shadow-lg relative overflow-hidden">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Frame Rate</span>
-                    <div class="my-2 flex items-baseline gap-1">
-                        <span id="stat-fps" class="text-3xl font-extrabold text-emerald-400 code-font">60.0</span>
-                        <span class="text-xs text-slate-500">FPS</span>
+                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Frame Rate</span>
+                    <div class="my-1.5 flex items-baseline gap-1">
+                        <span id="stat-fps" class="text-2xl font-extrabold text-emerald-400 code-font">60.0</span>
+                        <span class="text-[10px] text-slate-500">FPS</span>
                     </div>
                     <div id="stat-fps-bar" class="w-full h-1.5 bg-emerald-950 rounded-full overflow-hidden">
                         <div id="stat-fps-fill" class="h-full bg-emerald-400 transition-all duration-300" style="width: 100%"></div>
@@ -171,75 +170,78 @@
 
                 <!-- Stat: Operations / Sec -->
                 <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col justify-between shadow-lg">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Calculations/s</span>
-                    <div class="my-2 flex items-baseline gap-1">
-                        <span id="stat-ops" class="text-2xl font-extrabold text-cyan-400 code-font">0</span>
+                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Calculations/s</span>
+                    <div class="my-1.5 flex items-baseline gap-1">
+                        <span id="stat-ops" class="text-xl font-extrabold text-cyan-400 code-font">0</span>
                     </div>
-                    <span class="text-[10px] text-slate-500 font-mono">JS Math Iterations</span>
+                    <span class="text-[9px] text-slate-500 font-mono">JS Math Iterations</span>
                 </div>
 
                 <!-- Stat: Total Iterations -->
                 <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col justify-between shadow-lg">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Cycles</span>
-                    <div class="my-2 flex items-baseline gap-1">
+                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Total Cycles</span>
+                    <div class="my-1.5 flex items-baseline gap-1">
                         <span id="stat-cycles" class="text-xl font-extrabold text-purple-400 code-font">0</span>
                     </div>
-                    <span class="text-[10px] text-slate-500 font-mono">Numbers Added</span>
+                    <span class="text-[9px] text-slate-500 font-mono">Numbers Added</span>
                 </div>
 
                 <!-- Stat: Memory Estimation -->
                 <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex flex-col justify-between shadow-lg">
-                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">UI Load State</span>
-                    <div class="my-2 flex items-baseline gap-1">
-                        <span id="stat-load" class="text-xl font-bold text-slate-300 code-font">NOMINAL</span>
+                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">UI Load State</span>
+                    <div class="my-1.5 flex items-baseline gap-1">
+                        <span id="stat-load" class="text-lg font-bold text-slate-300 code-font">NOMINAL</span>
                     </div>
-                    <span id="stat-load-sub" class="text-[10px] text-slate-500 font-mono">Browser Response: Fast</span>
+                    <span id="stat-load-sub" class="text-[9px] text-slate-500 font-mono">Browser Response: Fast</span>
                 </div>
             </div>
 
-            <!-- Big Number Showcase -->
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl relative overflow-hidden flex-none">
-                <div class="absolute top-0 right-0 p-3 opacity-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32 text-slate-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <!-- Big Number Showcase (Ultra Compacted version to save screen height) -->
+            <div class="bg-slate-900 border border-slate-800 rounded-xl px-5 py-3.5 shadow-xl relative overflow-hidden flex-none">
+                <!-- Faint background graphic -->
+                <div class="absolute right-4 top-1/2 -translate-y-1/2 opacity-5 pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-slate-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
                 </div>
-                <div class="relative z-10 space-y-2">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Current Accumulated Total</span>
-                    <div id="stat-sum" class="text-2xl md:text-4xl lg:text-5xl font-extrabold text-amber-400 code-font break-all tracking-tight leading-tight select-all cursor-pointer hover:text-amber-300 transition-colors" title="Click to copy value">
+                
+                <div class="relative z-10 flex flex-col">
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-0.5">Current Accumulated Total</span>
+                    
+                    <div id="stat-sum" class="text-2xl md:text-3xl font-extrabold text-amber-400 code-font break-all tracking-tight leading-none select-all cursor-pointer hover:text-amber-300 transition-colors" title="Click to copy value">
                         0
                     </div>
-                    <div class="flex justify-between items-center pt-2">
+                    
+                    <div class="flex justify-between items-center mt-2 pt-2 border-t border-slate-800/60">
                         <span class="text-[10px] text-slate-500 font-mono">Uses ES6 BigInt to prevent math overflow limits.</span>
-                        <button id="btn-copy" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 bg-slate-950 px-2 py-1 rounded border border-slate-800 transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <button id="btn-copy" class="text-[10px] text-slate-300 hover:text-white flex items-center gap-1.5 bg-slate-950 px-2.5 py-1 rounded border border-slate-700 transition-all shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                             </svg>
-                            Copy Total
+                            Copy Data
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Dynamic Visualization & Console Area -->
-            <!-- Configured clean CSS grid with safe, un-squishable minimum heights -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 flex-grow min-h-[900px] lg:min-h-[500px]">
+            <!-- Anti-Squish 4 Panels Grid Layout (Fixed heights to prevent overlapping and clipping) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 flex-none pb-4">
                 
                 <!-- Performance Graph -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 lg:p-5 shadow-xl flex flex-col min-h-[220px] w-full min-w-0">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-xl flex flex-col h-[240px] w-full">
                     <div class="flex justify-between items-center mb-3 flex-none">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">FPS Stability History</span>
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-300">FPS Stability History</span>
                         <span class="text-[10px] text-slate-500 font-mono">Dips indicate processing lag</span>
                     </div>
-                    <div class="relative bg-slate-950 rounded-lg border border-slate-850 flex-grow min-h-[120px] w-full overflow-hidden">
+                    <div class="relative bg-slate-950 rounded-lg border border-slate-850 flex-1 w-full overflow-hidden">
                         <canvas id="fps-chart" class="absolute inset-0 w-full h-full"></canvas>
                     </div>
                 </div>
 
                 <!-- Unbroken Single-Line Render Chamber -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 lg:p-5 shadow-xl flex flex-col min-h-[220px] w-full min-w-0">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-xl flex flex-col h-[240px] w-full">
                     <div class="flex justify-between items-center mb-2 flex-none">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
                             Single-Line Render
                         </span>
@@ -249,41 +251,41 @@
                         </label>
                     </div>
                     <!-- Single Horizontal Line Text Box -->
-                    <div id="single-line-box" class="flex-grow bg-slate-950 p-3 rounded-lg border border-slate-850 min-h-[100px] font-mono text-[10px] text-amber-500/80 overflow-x-auto whitespace-nowrap cyber-scroll select-all tracking-tight" title="Double click to select all text inside">
+                    <div id="single-line-box" class="flex-1 bg-slate-950 p-3 rounded-lg border border-slate-850 font-mono text-[10px] text-amber-500/80 overflow-x-auto whitespace-nowrap cyber-scroll select-all tracking-tight min-h-0" title="Double click to select all text inside">
                         [Single Line Stream Off] Toggle active switch above...
                     </div>
-                    <div class="mt-2 flex justify-between text-[10px] text-slate-500 font-mono flex-none">
-                        <span>Characters: <span id="char-count" class="text-amber-500">0</span></span>
+                    <div class="mt-2 flex justify-between items-end text-[10px] text-slate-500 font-mono flex-none pt-1">
+                        <span>Chars: <span id="char-count" class="text-amber-500">0</span></span>
                         <span>Forces layout reflows!</span>
                     </div>
                 </div>
                 
                 <!-- Console Feed -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 lg:p-5 shadow-xl flex flex-col min-h-[220px] w-full min-w-0">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-xl flex flex-col h-[240px] w-full">
                     <div class="flex justify-between items-center mb-2 flex-none">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
                             Live Console Feed
                         </span>
                         <span class="text-[10px] text-slate-500 font-mono" id="log-speed">Idle</span>
                     </div>
                     <!-- Log stream -->
-                    <div id="cyber-log" class="flex-grow bg-slate-950 p-3 rounded-lg border border-slate-850 min-h-[100px] font-mono text-[10px] text-red-400 overflow-y-auto cyber-scroll space-y-1">
+                    <div id="cyber-log" class="flex-1 bg-slate-950 p-3 rounded-lg border border-slate-850 font-mono text-[10px] text-red-400 overflow-y-auto cyber-scroll space-y-1 min-h-0">
                         <div class="text-slate-500">[System Log Ready]</div>
                         <div class="text-slate-500">Configure stress amplifiers to feed active outputs here.</div>
                     </div>
                 </div>
 
                 <!-- Image Render Chamber -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 lg:p-5 shadow-xl flex flex-col min-h-[220px] w-full min-w-0">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-xl flex flex-col h-[240px] w-full">
                     <div class="flex justify-between items-center mb-2 flex-none">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                        <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse"></span>
                             Image Node Chamber
                         </span>
                     </div>
                     <!-- Image Grid Stream -->
-                    <div id="image-flood-box" class="flex-grow bg-slate-950 p-3 rounded-lg border border-slate-850 min-h-[100px] overflow-y-auto cyber-scroll flex flex-wrap content-start gap-1">
+                    <div id="image-flood-box" class="flex-1 bg-slate-950 p-3 rounded-lg border border-slate-850 overflow-y-auto cyber-scroll flex flex-wrap content-start gap-1.5 min-h-0">
                         <div class="text-slate-500 font-mono text-[10px] w-full">[Image Stream Off] Awaiting activation...</div>
                     </div>
                 </div>
@@ -301,13 +303,6 @@
         </div>
         <span id="toast-text" class="text-sm font-medium text-slate-200">Calculated successfully!</span>
     </div>
-
-    <!-- Footer -->
-    <footer class="flex-none border-t border-slate-900 bg-slate-950 px-6 py-4 text-center">
-        <p class="text-xs text-slate-500">
-            This stress-testing interface creates safe browser thread workloads using chunked math iterations and DOM queuing.
-        </p>
-    </footer>
 
     <!-- App Logic -->
     <script>
@@ -627,22 +622,22 @@
             
             // Color updates based on FPS performance
             if (avgFps >= 50) {
-                statFps.className = "text-3xl font-extrabold text-emerald-400 code-font";
+                statFps.className = "text-2xl font-extrabold text-emerald-400 code-font";
                 statFpsFill.className = "h-full bg-emerald-400 transition-all";
                 statLoad.textContent = "NOMINAL";
-                statLoad.className = "text-xl font-bold text-emerald-400 code-font";
+                statLoad.className = "text-lg font-bold text-emerald-400 code-font";
                 statLoadSub.textContent = "Browser Response: Fast";
             } else if (avgFps >= 30) {
-                statFps.className = "text-3xl font-extrabold text-amber-500 code-font";
+                statFps.className = "text-2xl font-extrabold text-amber-500 code-font";
                 statFpsFill.className = "h-full bg-amber-500 transition-all";
                 statLoad.textContent = "CONGESTED";
-                statLoad.className = "text-xl font-bold text-amber-500 code-font";
+                statLoad.className = "text-lg font-bold text-amber-500 code-font";
                 statLoadSub.textContent = "Moderate Rendering Lag";
             } else {
-                statFps.className = "text-3xl font-extrabold text-red-500 code-font";
+                statFps.className = "text-2xl font-extrabold text-red-500 code-font";
                 statFpsFill.className = "h-full bg-red-500 transition-all";
                 statLoad.textContent = "CRITICAL LAG";
-                statLoad.className = "text-xl font-bold text-red-500 code-font animate-pulse";
+                statLoad.className = "text-lg font-bold text-red-500 code-font animate-pulse";
                 statLoadSub.textContent = "Severe Render Stuttering";
             }
 
