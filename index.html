@@ -110,7 +110,7 @@
                     </label>
 
                     <!-- Synchronous Scroll Lock -->
-                    <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition-all select-none">
+                    <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg bg-slate-950 border border-slate-850 hover:border-slate-750 transition-all select-none">
                         <div class="flex items-center h-5 mt-0.5">
                             <input id="chk-scroll-lock" type="checkbox" class="w-4 h-4 text-orange-500 bg-slate-900 border-slate-700 rounded focus:ring-orange-500 focus:ring-2">
                         </div>
@@ -121,7 +121,7 @@
                     </label>
 
                     <!-- Image Node Flood -->
-                    <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg bg-slate-950 border border-slate-800 hover:border-slate-700 transition-all select-none">
+                    <label class="flex items-start gap-3 cursor-pointer p-3 rounded-lg bg-slate-950 border border-slate-850 hover:border-slate-750 transition-all select-none">
                         <div class="flex items-center h-5 mt-0.5">
                             <input id="chk-image-flood" type="checkbox" class="w-4 h-4 text-purple-500 bg-slate-900 border-slate-700 rounded focus:ring-purple-500 focus:ring-2">
                         </div>
@@ -222,23 +222,23 @@
             </div>
 
             <!-- Dynamic Visualization & Console Area -->
-            <!-- Replaced nested flex rows with a clean CSS grid for perfect resizing -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 flex-1 min-h-[800px] md:min-h-[400px] lg:min-h-0">
+            <!-- Configured clean CSS grid with safe, un-squishable minimum heights -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6 flex-grow min-h-[900px] lg:min-h-[500px]">
                 
                 <!-- Performance Graph -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 lg:p-5 shadow-xl flex flex-col h-full min-h-[250px] lg:min-h-0 w-full min-w-0">
-                    <div class="flex justify-between items-center mb-3">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 lg:p-5 shadow-xl flex flex-col min-h-[220px] w-full min-w-0">
+                    <div class="flex justify-between items-center mb-3 flex-none">
                         <span class="text-xs font-semibold uppercase tracking-wider text-slate-300">FPS Stability History</span>
                         <span class="text-[10px] text-slate-500 font-mono">Dips indicate processing lag</span>
                     </div>
-                    <div class="relative bg-slate-950 rounded-lg border border-slate-850 flex-1 min-h-0 w-full overflow-hidden">
+                    <div class="relative bg-slate-950 rounded-lg border border-slate-850 flex-grow min-h-[120px] w-full overflow-hidden">
                         <canvas id="fps-chart" class="absolute inset-0 w-full h-full"></canvas>
                     </div>
                 </div>
 
                 <!-- Unbroken Single-Line Render Chamber -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 lg:p-5 shadow-xl flex flex-col h-full min-h-[250px] lg:min-h-0 w-full min-w-0">
-                    <div class="flex justify-between items-center mb-2">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 lg:p-5 shadow-xl flex flex-col min-h-[220px] w-full min-w-0">
+                    <div class="flex justify-between items-center mb-2 flex-none">
                         <span class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
                             Single-Line Render
@@ -249,7 +249,7 @@
                         </label>
                     </div>
                     <!-- Single Horizontal Line Text Box -->
-                    <div id="single-line-box" class="flex-1 bg-slate-950 p-3 rounded-lg border border-slate-850 min-h-0 font-mono text-[10px] text-amber-500/80 overflow-x-auto whitespace-nowrap cyber-scroll select-all tracking-tight" title="Double click to select all text inside">
+                    <div id="single-line-box" class="flex-grow bg-slate-950 p-3 rounded-lg border border-slate-850 min-h-[100px] font-mono text-[10px] text-amber-500/80 overflow-x-auto whitespace-nowrap cyber-scroll select-all tracking-tight" title="Double click to select all text inside">
                         [Single Line Stream Off] Toggle active switch above...
                     </div>
                     <div class="mt-2 flex justify-between text-[10px] text-slate-500 font-mono flex-none">
@@ -259,8 +259,8 @@
                 </div>
                 
                 <!-- Console Feed -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 lg:p-5 shadow-xl flex flex-col h-full min-h-[250px] lg:min-h-0 w-full min-w-0">
-                    <div class="flex justify-between items-center mb-2">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 lg:p-5 shadow-xl flex flex-col min-h-[220px] w-full min-w-0">
+                    <div class="flex justify-between items-center mb-2 flex-none">
                         <span class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
                             <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
                             Live Console Feed
@@ -268,22 +268,22 @@
                         <span class="text-[10px] text-slate-500 font-mono" id="log-speed">Idle</span>
                     </div>
                     <!-- Log stream -->
-                    <div id="cyber-log" class="flex-1 bg-slate-950 p-3 rounded-lg border border-slate-850 min-h-0 font-mono text-[10px] text-red-400 overflow-y-auto cyber-scroll space-y-1">
+                    <div id="cyber-log" class="flex-grow bg-slate-950 p-3 rounded-lg border border-slate-850 min-h-[100px] font-mono text-[10px] text-red-400 overflow-y-auto cyber-scroll space-y-1">
                         <div class="text-slate-500">[System Log Ready]</div>
                         <div class="text-slate-500">Configure stress amplifiers to feed active outputs here.</div>
                     </div>
                 </div>
 
                 <!-- Image Render Chamber -->
-                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 lg:p-5 shadow-xl flex flex-col h-full min-h-[250px] lg:min-h-0 w-full min-w-0">
-                    <div class="flex justify-between items-center mb-2">
+                <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 lg:p-5 shadow-xl flex flex-col min-h-[220px] w-full min-w-0">
+                    <div class="flex justify-between items-center mb-2 flex-none">
                         <span class="text-xs font-semibold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
                             <span class="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse"></span>
                             Image Node Chamber
                         </span>
                     </div>
                     <!-- Image Grid Stream -->
-                    <div id="image-flood-box" class="flex-1 bg-slate-950 p-3 rounded-lg border border-slate-850 min-h-0 overflow-y-auto cyber-scroll flex flex-wrap content-start gap-1">
+                    <div id="image-flood-box" class="flex-grow bg-slate-950 p-3 rounded-lg border border-slate-850 min-h-[100px] overflow-y-auto cyber-scroll flex flex-wrap content-start gap-1">
                         <div class="text-slate-500 font-mono text-[10px] w-full">[Image Stream Off] Awaiting activation...</div>
                     </div>
                 </div>
